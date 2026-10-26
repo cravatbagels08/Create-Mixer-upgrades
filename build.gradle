@@ -1,0 +1,143 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+    id 'idea'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = "${mod_id}-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+// GameTests live in their own source set so they never ship in the mod jar
+sourceSets {
+    gametest {
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+
+repositories {
+    maven { url = 'https://maven.createmod.net' }          // Create, Ponder, Flywheel
+    maven { url = 'https://mvn.devos.one/snapshots' }      // Registrate
+    maven { url = 'https://maven.blamejared.com' }         // JEI (dev runtime only)
+}
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+            // ./gradlew runClient -PjoinLocal connects straight to a local runServer
+            if (project.hasProperty('joinLocal'))
+                programArguments.addAll('--quickPlayMultiplayer', 'localhost:25565')
+            if (project.hasProperty('compatDir'))
+                gameDirectory = project.file(project.compatDir)
+        }
+        server {
+            server()
+            gameDirectory = project.file(project.findProperty('compatDir') ?: 'run-server')
+            programArgument '--nogui'
+        }
+        gameTestServer {
+            type = "gameTestServer"
+            // -PcompatDir=<dir>: run against whatever Create jar is in <dir>/mods (see compat note below)
+            if (project.hasProperty('compatDir'))
+                gameDirectory = project.file(project.compatDir)
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+        configureEach {
+            logLevel = org.slf4j.event.Level.INFO
+        }
+    }
+
+    mods {
+        // The dev runs also load the GameTests; the built jar contains only main
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+            sourceSet(sourceSets.gametest)
+        }
+    }
+}
+
+neoForge.addModdingDependenciesTo(sourceSets.gametest)
+
+// Compatibility testing: with -PcompatDir set, the dev Create/Ponder/Flywheel/Registrate are left off the
+// runtime classpath, so a release Create jar (which bundles those) dropped into <compatDir>/mods is used instead.
+// Compilation still uses the versions in gradle.properties.
+if (project.hasProperty('compatDir')) {
+    configurations.runtimeClasspath {
+        exclude group: 'com.simibubi.create'
+        exclude group: 'net.createmod.ponder'
+        exclude group: 'dev.engine-room.flywheel'
+        exclude group: 'com.tterrag.registrate'
+    }
+}
+
+// localRuntime: present in dev runs but not a published dependency
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+    gametestImplementation.extendsFrom implementation
+    gametestRuntimeOnly.extendsFrom runtimeOnly
+    gametestCompileOnly.extendsFrom compileOnly
+}
+
+dependencies {
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    gametestCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    gametestCompileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            create_version_range   : create_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_authors            : mod_authors,
+            mod_url                : mod_url,
+            mod_version            : mod_version,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.named('jar', Jar) {
+    from('LICENSE') { rename { "LICENSE_${mod_id}" } }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}

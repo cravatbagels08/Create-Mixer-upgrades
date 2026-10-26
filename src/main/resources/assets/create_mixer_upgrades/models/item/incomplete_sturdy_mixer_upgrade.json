@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "create_mixer_upgrades:item/incomplete_sturdy_mixer_upgrade"
+  }
+}

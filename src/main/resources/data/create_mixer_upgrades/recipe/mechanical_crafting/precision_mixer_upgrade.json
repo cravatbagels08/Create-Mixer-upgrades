@@ -1,0 +1,32 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "category": "misc",
+  "key": {
+    "T": {
+      "item": "create:electron_tube"
+    },
+    "Q": {
+      "item": "create:polished_rose_quartz"
+    },
+    "P": {
+      "item": "create:precision_mechanism"
+    },
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "K": {
+      "item": "create_mixer_upgrades:brass_mixer_upgrade"
+    }
+  },
+  "pattern": [
+    " TQT ",
+    "BPKPB",
+    " TQT "
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mixer_upgrades:precision_mixer_upgrade"
+  },
+  "show_notification": false
+}

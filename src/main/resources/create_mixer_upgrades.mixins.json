@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.mixerupgrades.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BasinOperatingBlockEntityMixin",
+    "KineticBlockEntityMixin",
+    "MechanicalMixerBlockEntityMixin",
+    "SmartBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

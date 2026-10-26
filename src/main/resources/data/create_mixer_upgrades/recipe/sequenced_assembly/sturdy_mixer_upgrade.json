@@ -1,0 +1,80 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "create_mixer_upgrades:precision_mixer_upgrade"
+  },
+  "loops": 3,
+  "results": [
+    {
+      "id": "create_mixer_upgrades:sturdy_mixer_upgrade"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        },
+        {
+          "item": "create:sturdy_sheet"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        },
+        {
+          "type": "neoforge:single",
+          "amount": 250,
+          "fluid": "minecraft:lava"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        },
+        {
+          "item": "create:precision_mechanism"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_mixer_upgrades:incomplete_sturdy_mixer_upgrade"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "create:brass_casing"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "create_mixer_upgrades:brass_mixer_upgrade"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        },
+        {
+          "item": "create:whisk"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        },
+        {
+          "item": "create:precision_mechanism"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        },
+        {
+          "tag": "c:plates/brass"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_mixer_upgrades:incomplete_brass_mixer_upgrade"
+  }
+}

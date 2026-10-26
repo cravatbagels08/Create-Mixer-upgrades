@@ -1,0 +1,35 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "category": "misc",
+  "key": {
+    "S": {
+      "item": "create:sturdy_sheet"
+    },
+    "B": {
+      "item": "create:blaze_cake"
+    },
+    "T": {
+      "item": "create:electron_tube"
+    },
+    "P": {
+      "item": "create:precision_mechanism"
+    },
+    "N": {
+      "tag": "c:ingots/netherite"
+    },
+    "K": {
+      "item": "create_mixer_upgrades:sturdy_mixer_upgrade"
+    }
+  },
+  "pattern": [
+    " SBS ",
+    "TPKPT",
+    " SNS "
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mixer_upgrades:blazing_mixer_upgrade"
+  },
+  "show_notification": false
+}
